@@ -18,6 +18,9 @@ class Endstop:
 
         # Register QUERY_ENDSTOP command with ENDSTOP=<name> param
         self.gcode.register_mux_command('QUERY_ENDSTOP', "ENDSTOP", self.name, self.cmd_QUERY_ENDSTOP)
+        self.gcode.register_mux_command('QUERY_ENDSTOP_SILENT', "ENDSTOP", self.name, self.cmd_QUERY_ENDSTOP_SILENT)
+        # TODO: try implement it
+        # self.gcode.register_command('QUERY_ENDSTOP_ALL', self.name, self.cmd_QUERY_ENDSTOP) 
     
     # read enstop and write to memory
     def _update_endstope_state(self):
@@ -33,6 +36,12 @@ class Endstop:
     def cmd_QUERY_ENDSTOP(self, gcmd):
         self._update_endstope_state()
         gcmd.respond_info("%s : %s" % (self.name ,["open", "TRIGGERED"][self.last_state],))
+
+
+    # run custom QUERY_ENDSTOP_SILENT macros
+    def cmd_QUERY_ENDSTOP_SILENT(self, gcmd):
+        self._update_endstope_state()
+        # gcmd.respond_info("%s : %s" % (self.name ,["open", "TRIGGERED"][self.last_state],))
 
 
     # save as internal parameter for access from gcode's macroses 
